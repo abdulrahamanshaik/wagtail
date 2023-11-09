@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+<div class="nav-bottom-space">
+    <h1 class="text-center my-4 blog-title">{{ page.title }}</h1>
+    <p class="text-center my-3 blog-intro">{{ page.intro }}</p>
+
+    {% for item in page.gallery_images.all %}
+        <div class="image-container">
+            {% image item.image max-1000x500 class="fixed-image-size" %}
+        </div>
+    {% endfor %}
+
+    <div class="body-content my-4">
+        {{ page.body|safe }}
+    </div>
+
+    <div class="button-container text-center">
+        <a href="{{ page.get_parent.url }}" class="return-link btn btn-primary">Return to Stories</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogindexpage{% endblock %}
+
+{% block content %}
+<div class="container nav-bottom-space">
+    <h1 class="text-center my-4">Latest Stories</h1>
+        {% for post in blogpages %}
+            {% with post=post.specific %}
+                {% if forloop.counter0|divisibleby:3 %}
+                    <div class="row mb-4">
+                {% endif %}
+                <div class="col-md-4">
+                    <a href="{% pageurl post %}" class="card-link text-decoration-none text-success">
+                        <div class="card">
+                            {% with post.main_image as main_image %}
+                                {% if main_image %} 
+                                    {% image main_image fill-320x200 class="card-img-top" %}
+                                {% endif %}
+                            {% endwith %}
+                            <div class="card-body">
+                                <h2 class="card-title">{{ post.title }}</h2>
+                                <p class="card-text">{{ post.intro }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% if forloop.last or forloop.counter0|add:1|divisibleby:3 %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+</div>
+{% endblock %}

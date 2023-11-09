@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for item in page.carousel_items.all %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                {% image item.image width-1200 as carousel_image %}
+                <img src="{{ carousel_image.url }}" class="d-block w-100" alt="{{ item.caption | striptags }}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{ item.caption | richtext }}</h5>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!--About Us-->
+    {% for about_us in page.about_us_section.all %}
+    <div class="container mt-5">
+      <div class="row">
+          <h1 class="text-center my-4">About Us</h1>
+          <div class="col-md-6">
+              <div class="image-container">
+                  {% image about_us.about_us_images height-400 %}
+                  <img src="{{ about_us.about_us_image.url }}" class="img-fluid" alt="{{ about_us.about_title }}">
+              </div>
+          </div>
+          <div class="col-md-6 align-items-center d-flex flex-column">
+              <h2>{{ about_us.about_title }}</h2>
+              <p>{{ about_us.description }}</p>
+              <div class="social-links">
+                  {% if about_us.instagram_link %}
+                      <a href="{{ about_us.instagram_link }}" target="_blank" class="social-icon">
+                          <i class="fab fa-instagram"></i>
+                      </a>
+                  {% endif %}
+                  {% if about_us.twitter_link %}
+                      <a href="{{ about_us.twitter_link }}" target="_blank" class="social-icon">
+                          <i class="fab fa-twitter"></i>
+                      </a>
+                  {% endif %}
+                  {% if about_us.facebook_link %}
+                      <a href="{{ about_us.facebook_link }}" target="_blank" class="social-icon">
+                          <i class="fab fa-facebook"></i>
+                      </a>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+    {% endfor %}
+    <div class="owl-carousel owl-theme">
+      {% for image in page.about_us_carousel_images.all %}
+        <div class="item"><img src="{{ image.url }}" alt="{{ image.title }}"></div>
+      {% endfor %}
+    </div>
+    
+    <!--Latest Stories-->
+    <div class="container">
+        <h2 class="text-center my-5">Latest Stories</h2>
+        <div class="row">
+          {% for story in page.latest_stories.all %}
+            <div class="col-md-4">
+              {% image story.stories_image fill-350x350 %}
+              <h3>{{ story.stories_caption | richtext  }}</h3>
+              <p>{{ story.stories_description }}</p>
+            </div>
+          {% empty %}
+            <p>No latest stories available.</p>
+          {% endfor %}
+        </div>
+      </div>
+      <!--Contact Us-->
+      <div id="contact-us">
+        <h2 class="text-center my-5">Contact Us</h2>
+        <div class="banner" style="background-image: url('/media/images/pexels-oleksandr-p-12955643.original.jpg');">
+          <div class="contact-info">
+            <div class="contact-item">
+              <h2>Contact Number:</h2>
+              <p>{{ page.contact_us.first.contact_number }}</p>
+            </div>
+            <div class="contact-item">
+              <h2>Email:</h2>
+              <p>{{ page.contact_us.first.gmail }}</p>
+            </div>
+            <div class="contact-item">
+              <h2>Address:</h2>
+              <p>{{ page.contact_us.first.address }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock %}
+

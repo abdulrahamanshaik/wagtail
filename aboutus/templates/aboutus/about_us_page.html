@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-aboutuspage{% endblock %}
+
+{% block content %}
+<div class="container nav-bottom-space">
+    <h1 class="text-center">{{ page.about_title }}</h1>
+    <p class="text-center">{{ page.about_description }}</p>
+    <div class="mt-5">
+        <div class="captain-heading"> 
+            <h2 class="text-center ">Captain</h2>
+        </div>   
+        <div class="row justify-content-center captain-data">
+            {% for captain in page.main_head_of_company.all %}
+                <div class="col-md-6">
+                    {% image captain.main_image max-600x500 as captain_image %}
+                    <img src="{{ captain_image.url }}" class="img-fluid" alt="{{ captain.title }}">
+                </div>
+                <div class="col-md-6">
+                    <h3 class="captain-title">{{ captain.title }}</h3>
+                    <p class="captain-description">{{ captain.description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <div class="player-heading-container">
+            <h2 class="text-center">Players</h2>
+        </div>
+        {% for team_member in page.team_members.all %}
+        <div class="row team-member align-items-center player-card">
+            <div class="col-md-4 ">
+                {% image team_member.image max-400x350 as team_member_image %}
+                <img src="{{ team_member_image.url }}" class="img-fluid" alt="{{ team_member.title }}">
+            </div>
+            <div class="col-md-8 player-description">
+                <h3>{{ team_member.title }}</h3>
+                <p>{{ team_member.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
